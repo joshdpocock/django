@@ -1,0 +1,35 @@
+{% load leaflet_tags %}
+{% leaflet_css %}
+{% leaflet_js %}
+
+<div>
+	<h1> {{area_6_dmas.field_2}} </h1>
+	{% leaflet_map "main" callback="map_init" %}
+</div>
+
+<script type="text/javascript">
+   function map_init(map,options) {
+   		var polygon_str = "{{ area_6_dmas.geom.coords }}";
+   		polygon_str = polygon_str.replace(/\(/g, '[').replace(/\)/g, ']');
+
+
+      	var polygon2 = L.polygon([
+    							[51.509, -0.08],
+    							[51.503, -0.06],
+    							[51.51, -0.047]
+								]).addTo(map);
+
+
+
+   }
+</script>
+
+<div>
+	The leakage for {{ area_6_dmas.field_2 }} is {{ area_6_dmas.leakage}}
+	{{ area_6_dmas.geom.coords }}
+</div>
+
+
+
+	
+	

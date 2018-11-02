@@ -1,0 +1,39 @@
+{% load leaflet_tags %}
+{% leaflet_css %}
+{% leaflet_js %}
+
+<div>
+	<h1> {{area_6_dmas.field_2}} </h1>
+	{% leaflet_map "main" callback="map_init" %}
+</div>
+
+<style>
+	.leaflet-container { /* all maps */
+		width: 800px;
+		height: 600px;
+	}
+</style>
+
+<script type="text/javascript">
+   function map_init(map,options) {
+
+			var mystyle = {
+			    "color": "#ff7800",
+    			"weight": 5,
+    			"opacity": 0.65
+				};
+
+    		var feature = new L.geoJson({{ area_6_dmas.geom.geojson|safe }}, {style: mystyle})
+    		feature.addTo(map)
+		}
+
+</script>
+
+<div>
+	The leakage for {{ area_6_dmas.field_2 }} is {{ area_6_dmas.leakage}}
+</div>
+
+
+
+	
+	

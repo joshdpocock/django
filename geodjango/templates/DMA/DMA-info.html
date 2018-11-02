@@ -1,0 +1,72 @@
+{% load leaflet_tags %}
+{% leaflet_css %}
+{% leaflet_js %}
+
+<div>
+	<h1> DMA: {{ DMA_info.field_2 }} </h1>
+	{% if DMA_info %}
+	<ul>
+		<li> The leakage level is {{DMA_info.leakage}} </li>
+	</ul>
+	{% else %}
+	problem!
+	{% endif %}
+
+</div>
+
+<style>
+	.leaflet-container { /* all maps */
+		width: 800px;
+		height: 600px;
+	}
+</style>
+
+<div>
+	{% leaflet_map "main" callback="map_init" %}
+
+	<script type="text/javascript">
+   function map_init(map,options) {
+			map.setView([50.5719, -3.9207],8.2);
+
+			{% if DMA_info %}
+
+				leakage = {{ DMA_info.leakage }}
+
+				function getColor(L) {
+					return L > 110 ? '#b10026' :
+						   L > 90 ? '#e31a1c' :
+						   L > 70 ? "#fc4e2a" :
+						   L > 50 ? "#fd8d3c" :
+						   L > 30 ? "#feb24c" :
+						   L > 10 ? "#fed976" :
+									"#ffffb2";
+				}
+
+				function style(feature) {
+					return {
+						fillColor: getColor( leakage ),
+						weight: 1,
+						opacity: 0.65,
+						color: 'white',
+						fillOpacity: 0.7,
+						dashArray: '4'
+					};
+				}
+
+				var feature = new L.geoJson({{ DMA_info.geom.geojson|safe }},
+				{style: style})
+
+				feature.addTo(map)
+				map.fitBounds(feature.getBounds());
+
+			{% endif %}
+
+	}
+	</script>
+
+
+
+
+
+	
+	
